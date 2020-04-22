@@ -16,13 +16,13 @@ class TodoItem extends Component {
     }
 
     // 生命周期
-    shouldComponentUpdate(nextProps, nextState) { // 会重复渲染返回true 或者 false ,当两个值不相等的时候渲染
-        // return nextProps.isCompleted !== this.props.isCompleted
-    } 
+    // shouldComponentUpdate(nextProps, nextState) { // 会重复渲染返回true 或者 false ,当两个值不相等的时候渲染
+        // return nextProps.completed !== this.props.completed
+    // } 
 
     // UNSAFE_componentWillReceiveProps(nextProps){
     //     this.setState({
-    //         completedText: nextProps.isCompleted ? '已完成' : '未完成'
+    //         completedText: nextProps.completed ? '已完成' : '未完成'
     //     })
     // }
     render() { 
@@ -30,10 +30,10 @@ class TodoItem extends Component {
             <li>
                 <input 
                     type="checkbox" 
-                    checked={this.props.isCompleted}
+                    checked={this.props.completed}
                     onChange={this.handleCheckboxChange}
                 />
-                <span>{this.props.title}{this.props.isCompleted ? '已完成' : '未完成'}</span>
+                <span>{this.props.title}{this.props.completed ? '已完成' : '未完成'}</span>
             </li>
         );
     }

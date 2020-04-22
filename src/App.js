@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { getTodos } from './services'
 
 import {
     TodoHeader,
@@ -22,15 +23,16 @@ class App extends Component {
                 {
                     id: 1,
                     title: '吃饭',
-                    isCompleted: true
+                    completed: true
                 },
                 {
                     id: 2,
                     title: '睡觉',
-                    isCompleted: false
+                    completed: false
                 }
             ],
-            wang:'<div>a</div>'
+            wang:'<div>a</div>',
+            isLoading: true
         }
     }
     addTodo = (totoTitle) => {
@@ -39,7 +41,7 @@ class App extends Component {
         //     todos: this.state.todos.push({
         //         id: Math.random(),
         //         title: totoTitle,
-        //         isCompleted: false
+        //         completed: false
         //     })
         // })
         // concat 合并多个数组，返回新数组 (推荐)
@@ -47,7 +49,7 @@ class App extends Component {
         //     todos: this.state.todos.concat({
         //         id: Math.random(),
         //         title: totoTitle,
-        //         isCompleted: false
+        //         completed: false
         //     })
         // })
         // 相当于拷贝了成了一个新数组
@@ -55,11 +57,13 @@ class App extends Component {
         newTodos.push({
             id: Math.random(),
             title: totoTitle,
-            isCompleted: false
+            completed: false
         })
         this.setState({
             todos: newTodos
         })
+
+        // 应该先 post -> 
     }
     
     onCompeletedChange = (id) => {
@@ -68,13 +72,50 @@ class App extends Component {
             return {
                 todos:prevState.todos.map(todo => {
                     if(todo.id === id){
-                        todo.isCompleted = !todo.isCompleted
+                        todo.completed = !todo.completed
                     }
                     return todo
                 })
             }
         })
     }
+
+    
+    // axios 提出来
+    getData = () => {
+        this.setState({
+            isLoading: true
+        })
+
+        getTodos()
+        .then(resp => {
+            console.log(resp)
+            if(resp.status === 200) {
+                setTimeout(() => {
+                    this.setState({
+                        todos: resp.data
+                    })
+                },5000)
+                
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .finally(() => {
+            this.setState({
+                isLoading: false
+            })
+        })
+
+    }
+    
+
+    // 生命周期
+    componentDidMount(){
+        this.getData()
+    }
+
     render() { 
         return ( 
             <Fragment>
