@@ -1,29 +1,25 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App'
 
-// 如果想要全局扩展React.Component 的 prototype ，比如 ajax 的方法全局挂在早组件的 this 上面
-// 引入所有的axios 请求
-// import * as service from './services'
-// 挂载到 protoType 上的http 就可以在 this.http.方法名 来操作
-// React.Component.protoType.http = service
-
-// 在页面的使用方法
-// import { getRodos } from './services'
-// 生命周期
-    // componentDidMount(){
-    //     getTodos()
-    //     .then(resp => {
-    //         console.log(resp)
-    //         if(resp.status === 200) {
-    //             this.setState({
-    //                 todos: resp.data
-    //             })
-    //         }
-    //     })
-    // }
+// useState 是一个方法，这个方法的参数就是默认值，结果是一个数组第一个参数相当于 state 第二个参数是 setState
+// 解构出两个值
+const Counter = () => {
+  const [ count, setCount ] = useState(0)
+  useEffect(() => {
+    document.title = `数量是${count}`
+  })
+  return (
+    <div>
+      <div>当前数量是 {count}</div>
+      {/* 这里是 useState 就是setState 生成的方法（第二个值，不同地方在于，这里的参数是一个新值即可） */}
+      <button onClick={() => {setCount(count + 1)}}> + </button>
+          <span>{ count }</span>
+      <button onClick={() => {setCount(count - 1)}}> - </button>
+    </div>
+  )
+}
 
 ReactDOM.render(
-  <App />,
+  <Counter />,
   document.getElementById('root')
 )
