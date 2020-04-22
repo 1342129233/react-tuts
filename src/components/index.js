@@ -1,11 +1,3 @@
-import TodoHeader from "./TodoHeader"
-import TodoInput from "./TodoInput"
-import TodoList from './TodoList'
-import Like from './Like'
+export {default as Counter} from './Counter'
 
-export {
-    TodoHeader,
-    TodoInput,
-    TodoList,
-    Like
-}
+export {default as CountBtn } from './CountBtn'
