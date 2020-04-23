@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-// import withCopyright from './withCopyright'
-import Another from './Another'
+import withCopyright from './withCopyright'
 
-class App extends Component {
+@withCopyright
+
+
+class Another extends Component {
     constructor(props) {
         super(props);
         this.state = {  }
@@ -11,11 +13,10 @@ class App extends Component {
     render() { 
         return ( 
             <div>
-                App
-                <Another name="组件" />
+                Another {this.props.name}
             </div>
         );
     }
 }
  
-export default App;
+export default Another;
