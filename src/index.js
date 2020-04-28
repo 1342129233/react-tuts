@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App'
-import { Provider } from 'react-redux'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import App from './App.js'
 
 // 有一个调试小技巧(仅调试)
 // window.store = store
@@ -9,8 +9,6 @@ import { Provider } from 'react-redux'
 import store from './store'
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <App store = { store}/>,
   document.getElementById('root')
 )
