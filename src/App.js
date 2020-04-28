@@ -1,94 +1,56 @@
-import React, { Component, Fragment } from 'react';
-
+import React, { Component } from 'react';
+// Redirect 默认直接进入 home 首页 ,Switch 防止多匹配，判断路由
+import { Route, Link, Redirect, Switch } from 'react-router-dom'
 import {
-    TodoHeader,
-    TodoInput,
-    TodoList,
-    Like
-} from './components'
-
-// class 这种类组件有 this 普通的（函数式组件没有）没有 this 组件
+    Home,
+    Artical,
+    Users,
+    ArticalDetail,
+    NotFound
+} from './Views'
 
 class App extends Component {
-    // state = { 
-    //     title: '今日事'
-    // }
-    
-    constructor(){    // 这里面 this.state 里面必须加上 super()
-        super()
-        this.state = { 
-            title: '今日事',
-            todos: [
-                {
-                    id: 1,
-                    title: '吃饭',
-                    isCompleted: true
-                },
-                {
-                    id: 2,
-                    title: '睡觉',
-                    isCompleted: false
-                }
-            ],
-            wang:'<div>a</div>'
+    constructor(props) {
+        super(props);
+        this.state = {  
+            isLogin: false
         }
     }
-    addTodo = (totoTitle) => {
-        // 这样写出问题， 因为 3 不是一个数组， 因为 push 语句返回的是数组的长度
-        // this.setState({
-        //     todos: this.state.todos.push({
-        //         id: Math.random(),
-        //         title: totoTitle,
-        //         isCompleted: false
-        //     })
-        // })
-        // concat 合并多个数组，返回新数组 (推荐)
-        // this.setState({
-        //     todos: this.state.todos.concat({
-        //         id: Math.random(),
-        //         title: totoTitle,
-        //         isCompleted: false
-        //     })
-        // })
-        // 相当于拷贝了成了一个新数组
-        const newTodos = this.state.todos.slice()
-        newTodos.push({
-            id: Math.random(),
-            title: totoTitle,
-            isCompleted: false
-        })
-        this.setState({
-            todos: newTodos
-        })
-    }
-    
-    onCompeletedChange = (id) => {
-        console.log('onCompeletedChange',id)
-        this.setState((prevState) => {
-            return {
-                todos:prevState.todos.map(todo => {
-                    if(todo.id === id){
-                        todo.isCompleted = !todo.isCompleted
-                    }
-                    return todo
-                })
-            }
-        })
-    }
     render() { 
-        return ( 
-            <Fragment>
-                <div dangerouslySetInnerHTML={{__html:this.state.wang}}></div>
-                <TodoHeader title={this.state.title} x={1} y={2}>
-                    待办事项
-                </TodoHeader>
-                <TodoInput btnText="ADD" addTodo={this.addTodo} />
-                <TodoList 
-                    todos={this.state.todos} 
-                    onCompeletedChange={this.onCompeletedChange}
-                />
-                <Like />
-            </Fragment>
+        return (  
+            <div>
+                <ul>
+                    <li><Link to="/Home" >首页</Link></li>
+                    <li><Link to="/Artical" >文章</Link></li>
+                    <li><Link to="/Users" >用户</Link></li>
+                </ul>
+                {/* 默认是非完全匹配， exact 表示完全匹配，有包含关系，最好在里面写用方法一 */}
+                {/* <Switch>
+                    <Route component={Home} path="/Home" />
+                    <Route component={Artical} path="/Artical" exact />
+                    <Route component={ArticalDetail} path="/Artical/:id" />
+                    <Route component={Users} path="/Users" />
+                    <Route component={NotFound} path="/404" />
+                    <Redirect to="/Home" from="/" exact />
+                    <Redirect to="/404" />
+                </Switch> */}
+                
+                {/* 渲染方法二 ， render 出来的是什么就是什么，component优先，component 不能传递额外参数 render可以 */}
+                {/* render 必须是一个方法 */}
+                <Switch>
+                    <Route path="/Home" render={ (routerProps)=> {
+                        // return <Home x={1} {...routerProps} />
+                        // 判断是不是登录
+                        return this.state.isLogin ? <Users {...routerProps} /> : <div>请登录</div>
+                    }} />
+                    <Route component={Artical} path="/Artical" exact />
+                    <Route component={ArticalDetail} path="/Artical/:id" />
+                    <Route component={Users} path="/Users" />
+                    <Route component={NotFound} path="/404" />
+                    <Redirect to="/Home" from="/" exact />
+                    <Redirect to="/404" />
+                </Switch>
+            </div>
         );
     }
 }
